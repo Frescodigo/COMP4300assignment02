@@ -1,0 +1,27 @@
+﻿  Game.cpp
+  EntityManager.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(231,56): error C2665: 'Entity::Entity': no overloaded function could convert all the argument types
+C:\dev\COMP4300\assignment02\assignment02\src\Entity.h(15,2): message : could be 'Entity::Entity(const size_t,const std::string &)'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(231,56): message : 'Entity::Entity(const size_t,const std::string &)': cannot convert argument 1 from 'const std::string' to 'const size_t'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(231,77): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\xutility(231,56): message : while trying to match the argument list '(const std::string, _Ty)'
+          with
+          [
+              _Ty=size_t
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\memory(2023,1): message : see reference to function template instantiation 'void std::_Construct_in_place<_Ty,const std::string&,unsigned __int64>(_Ty &,const std::string &,unsigned __int64 &&) noexcept(false)' being compiled
+          with
+          [
+              _Ty=Entity
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\memory(2703,36): message : see reference to function template instantiation 'std::_Ref_count_obj2<Entity>::_Ref_count_obj2<const std::string&,_Ty>(const std::string &,_Ty &&)' being compiled
+          with
+          [
+              _Ty=size_t
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\memory(2704,20): message : see reference to function template instantiation 'std::_Ref_count_obj2<Entity>::_Ref_count_obj2<const std::string&,_Ty>(const std::string &,_Ty &&)' being compiled
+          with
+          [
+              _Ty=size_t
+          ]
+C:\dev\COMP4300\assignment02\assignment02\src\EntityManager.cpp(21,58): message : see reference to function template instantiation 'std::shared_ptr<Entity> std::make_shared<Entity,const std::string&,size_t>(const std::string &,size_t &&)' being compiled
