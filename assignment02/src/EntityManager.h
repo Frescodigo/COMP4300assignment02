@@ -17,7 +17,7 @@ class EntityManager
 public:
 	EntityManager();
 	void update();
-	void removeDeadEntities();
+	void removeDeadEntities(EntityVec& vec);
 	std::shared_ptr<Entity> addEntity(const std::string& tag);
 	EntityVec& getEntities();
 	EntityVec& getEntities(const std::string& tag);

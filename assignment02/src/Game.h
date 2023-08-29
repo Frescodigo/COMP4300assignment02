@@ -24,6 +24,15 @@ struct PlayerConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V; float S; };
 	Spawn Interval		SP			int
 */
 struct EnemyConfig { int SR, CR, OR, OG, OB, OT, VMIN, VMAX, L, SI; float SMIN, SMAX; };
+/* Player Specification
+	Shape Radius		SR			int
+	Collision Radius	CR			int
+	Speed				S			float
+	Fill Color			FR,FG,FB	int,int,int
+	Outline Color		OR,OG,OB	int,int,int
+	Outline Thickness	OV			int
+	Shape Vertices		V			int
+*/
 struct BulletConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V, L; float S; };
 
 class Game
@@ -43,6 +52,9 @@ class Game
 	bool m_paused = false;
 	bool m_running = true;
 
+	int m_specialCountdown = 60 * 10;
+	int m_lastSpecialUsed = 0;
+
 	std::shared_ptr<Entity> m_player;
 
 	void init(const std::string& config);
@@ -59,7 +71,9 @@ class Game
 	void spawnEnemy();
 	void spawnSmallEnemies(std::shared_ptr<Entity> entity);
 	void spawnBullet(std::shared_ptr<Entity> entity, const Vec2& mousePos);
-	void spawnSpecialWeapon(std::shared_ptr<Entity> entity);
+	void spawnSpecialWeapon(Vec2 target);
+
+	int randomRange(int min, int max);
 
 public:
 

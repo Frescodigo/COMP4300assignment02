@@ -18,7 +18,8 @@ const size_t Entity::id() const
 {
 	return m_id;
 }
-void destroy()
+void Entity::destroy()
 {
 	// TODO
+	m_active = false;
 }
