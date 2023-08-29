@@ -3,8 +3,6 @@
 #include "Entity.h"
 #include "EntityManager.h"
 
-#include <SFML/Graphics.hpp>
-
 /* Player Specification
 	Shape Radius		SR			int
 	Collision Radius	CR			int

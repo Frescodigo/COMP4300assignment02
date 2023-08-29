@@ -67,34 +67,18 @@ void Game::init(const std::string& path)
 
 void Game::run()
 {
-	//while (m_running)
-	//{
-	//	// m_entities.update();
-
-	//	sEnemySpawner();
-	//	sMovement();
-	//	sCollision();
-	//	sUserInput();
-	//	sRender();
-
-	//	// may need to be moved
-	//	m_currentFrame++;
-	//}
-
-	while (m_window.isOpen())
+	while (m_running)
 	{
-		sf::Event event;
-		while (m_window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-			{
-				m_window.close();
-			}
-		}
+		m_entities.update();
 
-		m_window.clear();
-		m_window.draw(m_text);
-		m_window.display();
+		//sEnemySpawner();
+		sMovement();
+		//sCollision();
+		sUserInput();
+		sRender();
+
+		// may need to be moved
+		m_currentFrame++;
 	}
 }
 
@@ -105,20 +89,164 @@ void Game::setPaused(bool paused)
 
 void Game::spawnPlayer()
 {
-	//// TODO add all properties to the player from the config file
-	//auto entity = m_entities.addEntity("player");
+	// TODO add all properties to the player from the config file
+	auto entity = m_entities.addEntity("player");
 
-	//// give the entity a transform
-	////entity->cTransform = std::make_shared<CTransform>(Vec2(m_wWidth / 2.f, m_wHeight / 2.f), Vec2(0,0), 0);
+	// give the entity a transform
+	entity->cTransform = std::make_shared<CTransform>(Vec2(m_wWidth / 2.f, m_wHeight / 2.f), Vec2(0,0), 0);
 
-	//// entity shape
-	//sf::Color playerFillColor = sf::Color(m_playerConfig.FR, m_playerConfig.FG, m_playerConfig.FB);
-	//sf::Color playerOutlineColor = sf::Color(m_playerConfig.OR, m_playerConfig.OG, m_playerConfig.OB);
-	//entity->cShape = std::make_shared<CShape>(m_playerConfig.SR, m_playerConfig.V,
-	//		playerFillColor, playerOutlineColor, m_playerConfig.OT);
+	// entity shape
+	sf::Color playerFillColor = sf::Color(m_playerConfig.FR, m_playerConfig.FG, m_playerConfig.FB);
+	sf::Color playerOutlineColor = sf::Color(m_playerConfig.OR, m_playerConfig.OG, m_playerConfig.OB);
+	entity->cShape = std::make_shared<CShape>(m_playerConfig.SR, m_playerConfig.V,
+			playerFillColor, playerOutlineColor, m_playerConfig.OT);
 
-	//// input
-	//entity->cInput = std::make_shared<CInput>();
+	// input
+	entity->cInput = std::make_shared<CInput>();
 
-	//m_player = entity;
+	m_player = entity;
+}
+
+void Game::spawnEnemy()
+{
+	// TODO
+	auto entity = m_entities.addEntity("enemy");
+
+	float mx = 30;
+	float my = 30;
+
+	entity->cTransform = std::make_shared<CTransform>(Vec2(mx, my), Vec2(0, 0), 0);
+
+	entity->cShape = std::make_shared<CShape>(32, 8, sf::Color(10, 10, 10), sf::Color(255, 0, 0), 4.0f);
+
+	m_lastEnemySpawnTime = m_currentFrame;
+}
+
+void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
+{
+
+}
+
+void Game::spawnBullet(std::shared_ptr<Entity> e, const Vec2& target)
+{
+
+}
+
+void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity)
+{
+
+}
+
+void Game::sMovement()
+{
+	float move_x = m_player->cInput->right - m_player->cInput->left;
+	float move_y = m_player->cInput->down - m_player->cInput->up;
+
+	Vec2 velocity(move_x, move_y);
+	velocity.normalize();
+	velocity *= m_playerConfig.S;
+	m_player->cTransform->velocity = velocity;
+
+	for (auto entity : m_entities.getEntities())
+	{
+		if (entity->cTransform)
+		{
+			entity->cTransform->pos += entity->cTransform->velocity;
+			entity->cShape->circle.setPosition(entity->cTransform->pos.x, entity->cTransform->pos.y);
+		}
+	}
+}
+
+void Game::sLifespan()
+{
+
+}
+
+void Game::sCollision()
+{
+
+}
+
+void Game::sEnemySpawner()
+{
+
+}
+
+void Game::sRender()
+{
+	m_window.clear();
+
+	std::cout << m_entities.getEntities().size() << std::endl;
+
+	for (auto& e : m_entities.getEntities())
+	{
+		// set the position based on entity's transform->pos
+		e->cShape->circle.setPosition(e->cTransform->pos.x, e->cTransform->pos.y);
+
+		// set the rotation of the shape based on the transform angle
+		e->cTransform->angle += 1.0f;
+		e->cShape->circle.setRotation(e->cTransform->angle);
+
+		//draw the entitiy's sf::CircleShape
+		m_window.draw(e->cShape->circle);
+	}
+
+	m_window.draw(m_text);
+
+	m_window.display();
+}
+
+void Game::sUserInput()
+{
+	sf::Event event;
+	while (m_window.pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed)
+		{
+			m_running = false;
+		}
+
+		if (event.type == sf::Event::KeyPressed)
+		{
+			switch (event.key.code)
+			{
+			case sf::Keyboard::Escape:
+				m_running = false;
+				break;
+			case sf::Keyboard::W:
+				m_player->cInput->up = true;
+				break;
+			case sf::Keyboard::S:
+				m_player->cInput->down = true;
+				break;
+			case sf::Keyboard::A:
+				m_player->cInput->left = true;
+				break;
+			case sf::Keyboard::D:
+				m_player->cInput->right = true;
+			default:
+				break;
+			}
+		}
+
+		if (event.type == sf::Event::KeyReleased)
+		{
+			switch (event.key.code)
+			{
+			case sf::Keyboard::W:
+				m_player->cInput->up = false;
+				break;
+			case sf::Keyboard::S:
+				m_player->cInput->down = false;
+				break;
+			case sf::Keyboard::A:
+				m_player->cInput->left = false;
+				break;
+			case sf::Keyboard::D:
+				m_player->cInput->right = false;
+			default:
+				break;
+			}
+		}
+	}
 }

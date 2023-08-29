@@ -73,13 +73,11 @@ float Vec2::dist(const Vec2& rhs) const
 
 float Vec2::length() const
 {
-	return sqrt(x * x + y * y);
+	return sqrt(x*x + y*y);
 }
 
 Vec2 Vec2::normalize()
 {
-	float length = this->length();
-	x /= length;
-	y /= length;
+	*this = length() == 0.0f ? Vec2(0.0f, 0.0f) : *this / length();
 	return *this;
 }

@@ -1,24 +1,38 @@
 #include "EntityManager.h"
 
+EntityManager::EntityManager()
+{
+}
 
 void EntityManager::update()
 {
-	for (auto e : m_toAdd)
+	for (std::shared_ptr<Entity> entity : m_toAdd)
 	{
-		m_entities.push_back(e);
-		m_entityMap[e->tag()].push_back(e);
+		m_entities.push_back(entity);
 	}
 	m_toAdd.clear();
-	for (auto e : m_entities)
-	{
-		// if e is dead, remove from entities
-		// if e is dead remove from entitymap
-	}
+}
+
+void EntityManager::removeDeadEntities()
+{
+	// TODO
 }
 
 std::shared_ptr<Entity> EntityManager::addEntity(const std::string& tag)
 {
-	auto e = std::make_shared<Entity>(tag, m_totalEntities++);
+	auto e = std::shared_ptr<Entity>(new Entity(m_totalEntities++, tag));
 	m_toAdd.push_back(e);
 	return e;
 }
+
+EntityVec& EntityManager::getEntities()
+{
+	return m_entities;
+}
+
+//EntityVec& EntityManager::getEntities(const std::string& tag)
+//{
+//	//TODO
+//	return m_entities;
+//}
+
