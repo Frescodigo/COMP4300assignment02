@@ -1,6 +1,8 @@
 # COMP4300assignment02
 Second assignment following along the lectures of COMP4300. This was a primer in the ECS (Entities, Components, Systems) design paradigm.
 
+***disclaimer*** literally no idea how to do a build system with visual studio :/
+
 
 ## Postmortem
 Very hacky and would benefit from a refactor. That being said, this is the largest project I think I've ever finished and I am excited to continue building more complex things.
